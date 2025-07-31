@@ -2,8 +2,14 @@ defmodule PentoWeb.WrongLive do
   require Logger
   use PentoWeb, :live_view
 
-  def mount(_params, _session, socket) do
-    {:ok, assign(socket, score: 0, message: "Make a guess:", time: time())}
+  def mount(_params, session, socket) do
+    {:ok,
+     assign(socket,
+       score: 0,
+       message: "Make a guess:",
+       time: time(),
+       session_id: session["live_socket_id"]
+     )}
   end
 
   def handle_params(_params, _url, socket) do
@@ -32,6 +38,11 @@ defmodule PentoWeb.WrongLive do
             </.link>
           <% end %>
         </h2>
+        <br />
+        <pre>
+          {@current_user.email}
+          {@session_id}
+        </pre>
         """
 
       :win ->

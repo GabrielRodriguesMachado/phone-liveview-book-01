@@ -80,12 +80,6 @@ defmodule Pento.Accounts do
     |> Repo.insert()
   end
 
-  def update_username(%User{} = user, username) do
-    user
-    |> User.update_username(username)
-    |> Repo.update()
-  end
-
   @doc """
   Returns an `%Ecto.Changeset{}` for tracking user changes.
 

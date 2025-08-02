@@ -40,7 +40,7 @@ defmodule PentoWeb.WrongLive do
         </h2>
         <br />
         <pre>
-          {@current_user.email}
+          {@current_user.username}
           {@session_id}
         </pre>
         """

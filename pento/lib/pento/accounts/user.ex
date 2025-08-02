@@ -3,11 +3,12 @@ defmodule Pento.Accounts.User do
   import Ecto.Changeset
 
   schema "users" do
-    field :email, :string
-    field :password, :string, virtual: true, redact: true
-    field :hashed_password, :string, redact: true
-    field :current_password, :string, virtual: true, redact: true
-    field :confirmed_at, :utc_datetime
+    field(:email, :string)
+    field(:password, :string, virtual: true, redact: true)
+    field(:hashed_password, :string, redact: true)
+    field(:current_password, :string, virtual: true, redact: true)
+    field(:confirmed_at, :utc_datetime)
+    field(:username, :string)
 
     timestamps(type: :utc_datetime)
   end
@@ -37,9 +38,10 @@ defmodule Pento.Accounts.User do
   """
   def registration_changeset(user, attrs, opts \\ []) do
     user
-    |> cast(attrs, [:email, :password])
+    |> cast(attrs, [:email, :password, :username])
     |> validate_email(opts)
     |> validate_password(opts)
+    |> validate_username()
   end
 
   defp validate_email(changeset, opts) do
@@ -59,6 +61,15 @@ defmodule Pento.Accounts.User do
     # |> validate_format(:password, ~r/[A-Z]/, message: "at least one upper case character")
     # |> validate_format(:password, ~r/[!?@#$%^&*_0-9]/, message: "at least one digit or punctuation character")
     |> maybe_hash_password(opts)
+  end
+
+  defp validate_username(changeset) do
+    changeset
+    |> validate_required([:username])
+    |> validate_length(:username, min: 3, max: 20)
+    |> validate_format(:username, ~r/^[a-zA-Z0-9_]+$/,
+      message: "must contain only letters, numbers, and underscores"
+    )
   end
 
   defp maybe_hash_password(changeset, opts) do
@@ -157,5 +168,13 @@ defmodule Pento.Accounts.User do
     else
       add_error(changeset, :current_password, "is not valid")
     end
+  end
+
+  def update_username(%Pento.Accounts.User{} = user, username) do
+    user
+    |> change(username: username)
+    |> validate_required([:username])
+    |> validate_length(:username, min: 3, max: 20)
+    |> unique_constraint(:username)
   end
 end

@@ -5,7 +5,7 @@ defmodule Pento.MixProject do
     [
       app: :pento,
       version: "0.1.0",
-      elixir: "~> 1.14",
+      elixir: "~> 1.17",
       elixirc_paths: elixirc_paths(Mix.env()),
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
@@ -19,7 +19,7 @@ defmodule Pento.MixProject do
   def application do
     [
       mod: {Pento.Application, []},
-      extra_applications: [:logger, :runtime_tools]
+      extra_applications: [:logger, :runtime_tools, :finch]
     ]
   end
 
@@ -51,8 +51,8 @@ defmodule Pento.MixProject do
        app: false,
        compile: false,
        depth: 1},
-      {:swoosh, "~> 1.5"},
-      {:finch, "~> 0.13"},
+      {:swoosh, "~> 1.19.5"},
+      {:finch, "~> 0.20"},
       {:telemetry_metrics, "~> 1.0"},
       {:telemetry_poller, "~> 1.0"},
       {:gettext, "~> 0.26"},

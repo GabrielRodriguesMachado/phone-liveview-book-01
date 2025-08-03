@@ -101,4 +101,10 @@ defmodule Pento.Catalog do
   def change_product(%Product{} = product, attrs \\ %{}) do
     Product.changeset(product, attrs)
   end
+
+  def markdown_product(%Product{} = product, attrs) do
+    product
+    |> Product.price_decrease_changeset(attrs)
+    |> Repo.update()
+  end
 end
